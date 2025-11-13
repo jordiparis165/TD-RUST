@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Stock Price Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .status {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .status.connected { color: #4ade80; }
+        .status.disconnected { color: #f87171; }
+        .stock-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .stock-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+        .stock-card:hover {
+            transform: translateY(-5px);
+        }
+        .stock-card.updated {
+            animation: pulse 0.5s;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .symbol {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .price {
+            font-size: 36px;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+        .source {
+            font-size: 12px;
+            color: #6b7280;
+            text-transform: uppercase;
+        }
+        .timestamp {
+            font-size: 11px;
+            color: #9ca3af;
+            margin-top: 10px;
+        }
+        .toolbar {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .toolbar button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 0 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📈 Real-Time Stock Prices</h1>
+        <div class="status" id="status">Connecting...</div>
+        <div class="toolbar">
+            <button onclick="sendStats()">/stats</button>
+            <button onclick="subscribeAAPL()">SUB AAPL</button>
+            <button onclick="subscribeAll()">SUB ALL</button>
+        </div>
+        <div class="stock-grid" id="stocks"></div>
+    </div>
+
+    <script>
+        let ws;
+        const stocks = new Map();
+        const statusEl = document.getElementById('status');
+        const stocksEl = document.getElementById('stocks');
+
+        function connect() {
+            ws = new WebSocket('ws://127.0.0.1:8080');
+
+            ws.onopen = () => {
+                statusEl.textContent = '🟢 Connected';
+                statusEl.className = 'status connected';
+            };
+
+            ws.onclose = () => {
+                statusEl.textContent = '🔴 Disconnected - Reconnecting...';
+                statusEl.className = 'status disconnected';
+                setTimeout(connect, 3000);
+            };
+
+            ws.onerror = (error) => {
+                console.error('WebSocket error:', error);
+            };
+
+            ws.onmessage = (event) => {
+                try {
+                    const data = JSON.parse(event.data);
+
+                    if (data.type === 'connected') {
+                        console.log(data.message);
+                        return;
+                    }
+
+                    const key = `${data.symbol}-${data.source}`;
+                    stocks.set(key, data);
+                    renderStocks();
+                } catch (_) {
+                    console.log('Server says:', event.data);
+                }
+            };
+        }
+
+        function renderStocks() {
+            const sorted = Array.from(stocks.values())
+                .sort((a, b) => a.symbol.localeCompare(b.symbol));
+
+            stocksEl.innerHTML = sorted.map(stock => {
+                const date = new Date(stock.timestamp * 1000);
+                return `
+                    <div class="stock-card updated" id="card-${stock.symbol}-${stock.source}">
+                        <div class="symbol">${stock.symbol}</div>
+                        <div class="price">$${Number(stock.price).toFixed(2)}</div>
+                        <div class="source">${stock.source}</div>
+                        <div class="timestamp">Updated: ${date.toLocaleTimeString()}</div>
+                    </div>
+                `;
+            }).join('');
+
+            setTimeout(() => {
+                document.querySelectorAll('.stock-card.updated').forEach(card => {
+                    card.classList.remove('updated');
+                });
+            }, 500);
+        }
+
+        function sendStats() {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send('/stats');
+            }
+        }
+        function subscribeAAPL() {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send('SUB AAPL');
+            }
+        }
+        function subscribeAll() {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send('SUB ALL');
+            }
+        }
+
+        connect();
+    </script>
+</body>
+</html>

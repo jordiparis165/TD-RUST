@@ -1,0 +1,16 @@
+[package]
+name = "ws-echo-server"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+tokio-tungstenite = "0.23"
+futures-util = "0.3"
+env_logger = "0.11"
+log = "0.4"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+rand = "0.8"
+chrono = "0.4"
+sqlx = { version = "0.7", features = ["runtime-tokio-rustls", "postgres", "macros"] }
