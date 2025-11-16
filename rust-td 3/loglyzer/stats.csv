@@ -1,0 +1,9 @@
+metric,category,value
+total,all,10
+level,Error,2
+level,Warning,2
+level,Debug,1
+level,Info,5
+error_by_hour,10,2
+top_error,"Failed to connect to API: timeout",1
+top_error,"Database query failed: syntax error",1

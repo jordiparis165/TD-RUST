@@ -1,0 +1,22 @@
+{
+  "total_entries": 10,
+  "by_level": {
+    "Debug": 1,
+    "Error": 2,
+    "Info": 5,
+    "Warning": 2
+  },
+  "top_errors": [
+    {
+      "message": "Database query failed: syntax error",
+      "count": 1
+    },
+    {
+      "message": "Failed to connect to API: timeout",
+      "count": 1
+    }
+  ],
+  "errors_by_hour": {
+    "10": 2
+  }
+}

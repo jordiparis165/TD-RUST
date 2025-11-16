@@ -1,8 +1,8 @@
     Blocking waiting for file lock on package cache
     Blocking waiting for file lock on package cache
     Blocking waiting for file lock on package cache
-   1.614807500s  INFO prepare_target{force=false package_id=ws-echo-server v0.1.0 (H:\Documents\Rust2\rust-td 2) target="ws-echo-server"}: cargo::core::compiler::fingerprint: fingerprint error for ws-echo-server v0.1.0 (H:\Documents\Rust2\rust-td 2)/Check { test: false }/TargetInner { name: "ws-echo-server", doc: true, ..: with_path("H:\\Documents\\Rust2\\rust-td 2\\src\\main.rs", Edition2021) }
-   1.614888500s  INFO prepare_target{force=false package_id=ws-echo-server v0.1.0 (H:\Documents\Rust2\rust-td 2) target="ws-echo-server"}: cargo::core::compiler::fingerprint:     err: failed to read `H:\Documents\Rust2\rust-td 2\target\debug\.fingerprint\ws-echo-server-a42829d65a7de999\bin-ws-echo-server`
+   0.708354300s  INFO prepare_target{force=false package_id=ws-echo-server v0.1.0 (H:\Documents\Rust2\rust-td 2) target="ws-echo-server"}: cargo::core::compiler::fingerprint: fingerprint error for ws-echo-server v0.1.0 (H:\Documents\Rust2\rust-td 2)/Check { test: false }/TargetInner { name: "ws-echo-server", doc: true, ..: with_path("H:\\Documents\\Rust2\\rust-td 2\\src\\main.rs", Edition2021) }
+   0.708417400s  INFO prepare_target{force=false package_id=ws-echo-server v0.1.0 (H:\Documents\Rust2\rust-td 2) target="ws-echo-server"}: cargo::core::compiler::fingerprint:     err: failed to read `H:\Documents\Rust2\rust-td 2\target\debug\.fingerprint\ws-echo-server-a42829d65a7de999\bin-ws-echo-server`
 
 Caused by:
     The system cannot find the file specified. (os error 2)
@@ -29,8 +29,8 @@ Stack backtrace:
   18: git_midx_writer_dump
   19: BaseThreadInitThunk
   20: RtlUserThreadStart
-   4.034005900s  INFO prepare_target{force=false package_id=ws-echo-server v0.1.0 (H:\Documents\Rust2\rust-td 2) target="ws-echo-server"}: cargo::core::compiler::fingerprint: fingerprint error for ws-echo-server v0.1.0 (H:\Documents\Rust2\rust-td 2)/Check { test: true }/TargetInner { name: "ws-echo-server", doc: true, ..: with_path("H:\\Documents\\Rust2\\rust-td 2\\src\\main.rs", Edition2021) }
-   4.034108400s  INFO prepare_target{force=false package_id=ws-echo-server v0.1.0 (H:\Documents\Rust2\rust-td 2) target="ws-echo-server"}: cargo::core::compiler::fingerprint:     err: failed to read `H:\Documents\Rust2\rust-td 2\target\debug\.fingerprint\ws-echo-server-5740001199a24ab7\test-bin-ws-echo-server`
+   0.879160000s  INFO prepare_target{force=false package_id=ws-echo-server v0.1.0 (H:\Documents\Rust2\rust-td 2) target="ws-echo-server"}: cargo::core::compiler::fingerprint: fingerprint error for ws-echo-server v0.1.0 (H:\Documents\Rust2\rust-td 2)/Check { test: true }/TargetInner { name: "ws-echo-server", doc: true, ..: with_path("H:\\Documents\\Rust2\\rust-td 2\\src\\main.rs", Edition2021) }
+   0.879200000s  INFO prepare_target{force=false package_id=ws-echo-server v0.1.0 (H:\Documents\Rust2\rust-td 2) target="ws-echo-server"}: cargo::core::compiler::fingerprint:     err: failed to read `H:\Documents\Rust2\rust-td 2\target\debug\.fingerprint\ws-echo-server-5740001199a24ab7\test-bin-ws-echo-server`
 
 Caused by:
     The system cannot find the file specified. (os error 2)
