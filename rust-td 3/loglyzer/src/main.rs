@@ -1,7 +1,5 @@
 
 // PARTIE 1 
-
-
 use clap::Parser;
 use colored::*;
 use once_cell::sync::Lazy;

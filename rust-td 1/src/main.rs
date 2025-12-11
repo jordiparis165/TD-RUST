@@ -50,7 +50,7 @@ struct GlobalQuote {
 #[derive(Deserialize, Debug)]
 struct Quote {
     #[serde(rename = "01. symbol")]
-    symbol: String,
+    _symbol: String,
     #[serde(rename = "05. price")]
     price: String,
 }
@@ -59,6 +59,11 @@ struct Quote {
 struct FinnhubQuote {
     c: f64, // current price
     t: i64, // timestamp
+}
+
+fn should_mock_fetch() -> bool {
+    // Allows offline/testing mode without hitting external HTTP APIs.
+    std::env::var("MOCK_FETCH").is_ok()
 }
 
 #[derive(Debug)]
@@ -82,6 +87,10 @@ struct Cli {
 }
 
 async fn fetch_alpha_vantage(symbol: &str) -> Result<StockPrice, Box<dyn std::error::Error>> {
+    if cfg!(test) || should_mock_fetch() {
+        return Ok(fetch_mock_price(symbol, "AlphaVantage"));
+    }
+
     // Try to read API key; if missing, return a mock price
     let api_key = match env::var("ALPHA_VANTAGE_KEY") {
         Ok(k) => k,
@@ -115,6 +124,10 @@ async fn fetch_alpha_vantage(symbol: &str) -> Result<StockPrice, Box<dyn std::er
 }
 
 async fn fetch_finnhub(symbol: &str) -> Result<StockPrice, Box<dyn std::error::Error>> {
+    if cfg!(test) || should_mock_fetch() {
+        return Ok(fetch_mock_price(symbol, "Finnhub"));
+    }
+
     let api_key = match env::var("FINNHUB_KEY") {
         Ok(k) => k,
         Err(_) => return Ok(fetch_mock_price(symbol, "Finnhub")),
@@ -162,9 +175,12 @@ async fn save_price(pool: &PgPool, price: &StockPrice) -> Result<(), sqlx::Error
 
 #[derive(Deserialize, Debug)]
 struct YahooQuote {
-    symbol: Option<String>,
-    regularMarketPrice: Option<f64>,
-    regularMarketTime: Option<i64>,
+    #[serde(rename = "symbol")]
+    _symbol: Option<String>,
+    #[serde(rename = "regularMarketPrice")]
+    regular_market_price: Option<f64>,
+    #[serde(rename = "regularMarketTime")]
+    regular_market_time: Option<i64>,
 }
 
 #[derive(Deserialize, Debug)]
@@ -174,23 +190,30 @@ struct YahooResult {
 
 #[derive(Deserialize, Debug)]
 struct YahooQuoteResponse {
-    quoteResponse: YahooResult,
+    #[serde(rename = "quoteResponse")]
+    quote_response: YahooResult,
 }
 
 async fn fetch_yahoo(symbol: &str) -> Result<StockPrice, Box<dyn std::error::Error>> {
+    if cfg!(test) || should_mock_fetch() {
+        return Ok(fetch_mock_price(symbol, "Yahoo"));
+    }
+
     // Yahoo public quote endpoint
     let url = format!("https://query1.finance.yahoo.com/v7/finance/quote?symbols={}", symbol);
 
     match reqwest::get(&url).await {
         Ok(resp) => match resp.json::<YahooQuoteResponse>().await {
             Ok(data) => {
-                if let Some(q) = data.quoteResponse.result.into_iter().next() {
-                    if let Some(price) = q.regularMarketPrice {
+                if let Some(q) = data.quote_response.result.into_iter().next() {
+                    if let Some(price) = q.regular_market_price {
                         return Ok(StockPrice {
                             symbol: symbol.to_string(),
                             price,
                             source: "Yahoo".to_string(),
-                            timestamp: q.regularMarketTime.unwrap_or_else(|| Utc::now().timestamp()),
+                            timestamp: q
+                                .regular_market_time
+                                .unwrap_or_else(|| Utc::now().timestamp()),
                         });
                     }
                 }
@@ -255,6 +278,37 @@ async fn fetch_and_save_all(pool: Option<&PgPool>, symbols: &[String]) -> Result
 
     info!("Completed fetch cycle");
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[tokio::test]
+    async fn fetchers_return_mock_when_mock_env_set() {
+        let a = fetch_alpha_vantage("TEST").await.unwrap();
+        let f = fetch_finnhub("TEST").await.unwrap();
+        let y = fetch_yahoo("TEST").await.unwrap();
+
+        assert_eq!(a.source, "AlphaVantage");
+        assert_eq!(f.source, "Finnhub");
+        assert_eq!(y.source, "Yahoo");
+    }
+
+    #[tokio::test]
+    async fn fetch_mock_price_has_expected_shape() {
+        let p = fetch_mock_price("TEST", "MockSource");
+        assert!(p.price >= 100.0 && p.price <= 200.0);
+        assert_eq!(p.symbol, "TEST");
+        assert_eq!(p.source, "MockSource");
+    }
+
+    #[tokio::test]
+    async fn fetch_and_save_all_runs_without_db_pool() {
+        let symbols = vec!["AAPL".to_string(), "GOOG".to_string()];
+        let res = fetch_and_save_all(None, &symbols).await;
+        assert!(res.is_ok());
+    }
 }
 
 #[tokio::main]
@@ -322,4 +376,3 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     info!("Shutdown complete");
     Ok(())
 }
-

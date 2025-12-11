@@ -18,7 +18,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let file = File::create(&filename)?;
     let mut writer = BufWriter::new(file);
 
-    let levels = ["INFO", "WARNING", "ERROR", "DEBUG"];
+    let _levels = ["INFO", "WARNING", "ERROR", "DEBUG"];
 
     let info_messages = [
         "Application started",

@@ -1,7 +1,3 @@
-# rust-td — Stock price aggregator
-
-This project periodically fetches stock prices from multiple sources and saves them to PostgreSQL.
-
 ## Features
 - Multi-source fetching (Alpha Vantage, Finnhub, YahooMock)
 - Parallel fetching with Tokio
@@ -52,16 +48,3 @@ cargo run -- --fetch-once
 cargo run -- --query-latest
 ```
 
-## Notes
-- If you want `sqlx` to validate SQL at compile time, run:
-
-```bash
-# ensure DATABASE_URL is set in env
-cargo sqlx prepare -- --lib
-```
-
-- The project uses a simple `fetch_yahoo_mock` as a third source. Replace it with a real API if you have credentials.
-
-## Troubleshooting
-- If DB inserts don't appear, ensure `DATABASE_URL` is set and points to the database where you ran the migration.
-- Check logs printed by the application for per-source errors.

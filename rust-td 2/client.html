@@ -11,83 +11,27 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
         }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        h1 {
-            color: white;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        .status {
-            text-align: center;
-            color: white;
-            margin-bottom: 30px;
-            font-size: 14px;
-        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { color: white; text-align: center; margin-bottom: 10px; }
+        .status { text-align: center; color: white; margin-bottom: 30px; font-size: 14px; }
         .status.connected { color: #4ade80; }
         .status.disconnected { color: #f87171; }
-        .stock-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        .stock-card {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s;
-        }
-        .stock-card:hover {
-            transform: translateY(-5px);
-        }
-        .stock-card.updated {
-            animation: pulse 0.5s;
-        }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        .symbol {
-            font-size: 24px;
-            font-weight: bold;
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-        .price {
-            font-size: 36px;
-            font-weight: bold;
-            color: #1f2937;
-            margin-bottom: 5px;
-        }
-        .source {
-            font-size: 12px;
-            color: #6b7280;
-            text-transform: uppercase;
-        }
-        .timestamp {
-            font-size: 11px;
-            color: #9ca3af;
-            margin-top: 10px;
-        }
-        .toolbar {
-            text-align: center;
-            margin-bottom: 16px;
-        }
-        .toolbar button {
-            padding: 8px 12px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            margin: 0 6px;
-        }
+        .stock-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .stock-card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: transform 0.2s; }
+        .stock-card:hover { transform: translateY(-5px); }
+        .stock-card.updated { animation: pulse 0.5s; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        .symbol { font-size: 24px; font-weight: bold; color: #667eea; margin-bottom: 10px; }
+        .price { font-size: 36px; font-weight: bold; color: #1f2937; margin-bottom: 5px; }
+        .source { font-size: 12px; color: #6b7280; text-transform: uppercase; }
+        .timestamp { font-size: 11px; color: #9ca3af; margin-top: 10px; }
+        .toolbar { text-align: center; margin-bottom: 16px; }
+        .toolbar button { padding: 8px 12px; border: none; border-radius: 8px; cursor: pointer; margin: 0 6px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📈 Real-Time Stock Prices</h1>
+        <h1>Real-Time Stock Prices</h1>
         <div class="status" id="status">Connecting...</div>
         <div class="toolbar">
             <button onclick="sendStats()">/stats</button>
@@ -107,12 +51,12 @@
             ws = new WebSocket('ws://127.0.0.1:8080');
 
             ws.onopen = () => {
-                statusEl.textContent = '🟢 Connected';
+                statusEl.textContent = 'Connected';
                 statusEl.className = 'status connected';
             };
 
             ws.onclose = () => {
-                statusEl.textContent = '🔴 Disconnected - Reconnecting...';
+                statusEl.textContent = 'Disconnected - Reconnecting...';
                 statusEl.className = 'status disconnected';
                 setTimeout(connect, 3000);
             };
@@ -124,12 +68,10 @@
             ws.onmessage = (event) => {
                 try {
                     const data = JSON.parse(event.data);
-
                     if (data.type === 'connected') {
                         console.log(data.message);
                         return;
                     }
-
                     const key = `${data.symbol}-${data.source}`;
                     stocks.set(key, data);
                     renderStocks();

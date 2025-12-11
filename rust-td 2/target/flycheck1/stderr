@@ -1,8 +1,8 @@
     Blocking waiting for file lock on package cache
     Blocking waiting for file lock on package cache
     Blocking waiting for file lock on package cache
-   0.708354300s  INFO prepare_target{force=false package_id=ws-echo-server v0.1.0 (H:\Documents\Rust2\rust-td 2) target="ws-echo-server"}: cargo::core::compiler::fingerprint: fingerprint error for ws-echo-server v0.1.0 (H:\Documents\Rust2\rust-td 2)/Check { test: false }/TargetInner { name: "ws-echo-server", doc: true, ..: with_path("H:\\Documents\\Rust2\\rust-td 2\\src\\main.rs", Edition2021) }
-   0.708417400s  INFO prepare_target{force=false package_id=ws-echo-server v0.1.0 (H:\Documents\Rust2\rust-td 2) target="ws-echo-server"}: cargo::core::compiler::fingerprint:     err: failed to read `H:\Documents\Rust2\rust-td 2\target\debug\.fingerprint\ws-echo-server-a42829d65a7de999\bin-ws-echo-server`
+   1.089042800s  INFO prepare_target{force=false package_id=ws-echo-server v0.1.0 (H:\Documents\Rust2\rust-td 2) target="ws-echo-server"}: cargo::core::compiler::fingerprint: fingerprint error for ws-echo-server v0.1.0 (H:\Documents\Rust2\rust-td 2)/Check { test: false }/TargetInner { name: "ws-echo-server", doc: true, ..: with_path("H:\\Documents\\Rust2\\rust-td 2\\src\\main.rs", Edition2021) }
+   1.089120200s  INFO prepare_target{force=false package_id=ws-echo-server v0.1.0 (H:\Documents\Rust2\rust-td 2) target="ws-echo-server"}: cargo::core::compiler::fingerprint:     err: failed to read `H:\Documents\Rust2\rust-td 2\target\debug\.fingerprint\ws-echo-server-f18a5353663752b0\bin-ws-echo-server`
 
 Caused by:
     The system cannot find the file specified. (os error 2)
@@ -29,8 +29,67 @@ Stack backtrace:
   18: git_midx_writer_dump
   19: BaseThreadInitThunk
   20: RtlUserThreadStart
-   0.879160000s  INFO prepare_target{force=false package_id=ws-echo-server v0.1.0 (H:\Documents\Rust2\rust-td 2) target="ws-echo-server"}: cargo::core::compiler::fingerprint: fingerprint error for ws-echo-server v0.1.0 (H:\Documents\Rust2\rust-td 2)/Check { test: true }/TargetInner { name: "ws-echo-server", doc: true, ..: with_path("H:\\Documents\\Rust2\\rust-td 2\\src\\main.rs", Edition2021) }
-   0.879200000s  INFO prepare_target{force=false package_id=ws-echo-server v0.1.0 (H:\Documents\Rust2\rust-td 2) target="ws-echo-server"}: cargo::core::compiler::fingerprint:     err: failed to read `H:\Documents\Rust2\rust-td 2\target\debug\.fingerprint\ws-echo-server-5740001199a24ab7\test-bin-ws-echo-server`
+   1.151436200s  INFO prepare_target{force=false package_id=sqlx v0.8.6 target="sqlx"}: cargo::core::compiler::fingerprint: fingerprint error for sqlx v0.8.6/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("sqlx", ["lib"], "H:\\RustTools\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\sqlx-0.8.6\\src\\lib.rs", Edition2021) }
+   1.151519000s  INFO prepare_target{force=false package_id=sqlx v0.8.6 target="sqlx"}: cargo::core::compiler::fingerprint:     err: failed to read `H:\Documents\Rust2\rust-td 2\target\debug\.fingerprint\sqlx-a42cab6baabc1b3b\lib-sqlx`
+
+Caused by:
+    The system cannot find the file specified. (os error 2)
+
+Stack backtrace:
+   0: git_midx_writer_dump
+   1: git_midx_writer_dump
+   2: git_midx_writer_dump
+   3: git_midx_writer_dump
+   4: git_filter_source_repo
+   5: git_filter_source_path
+   6: git_filter_source_path
+   7: git_filter_source_path
+   8: git_filter_source_path
+   9: git_filter_source_path
+  10: git_filter_source_repo
+  11: git_filter_source_repo
+  12: git_filter_source_repo
+  13: git_filter_source_repo
+  14: git_filter_source_repo
+  15: <unknown>
+  16: <unknown>
+  17: git_midx_writer_dump
+  18: git_filter_source_repo
+  19: git_midx_writer_dump
+  20: BaseThreadInitThunk
+  21: RtlUserThreadStart
+   1.262184100s  INFO prepare_target{force=false package_id=sqlx-postgres v0.8.6 target="sqlx_postgres"}: cargo::core::compiler::fingerprint: fingerprint error for sqlx-postgres v0.8.6/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("sqlx_postgres", ["lib"], "H:\\RustTools\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\sqlx-postgres-0.8.6\\src\\lib.rs", Edition2021) }
+   1.262218700s  INFO prepare_target{force=false package_id=sqlx-postgres v0.8.6 target="sqlx_postgres"}: cargo::core::compiler::fingerprint:     err: failed to read `H:\Documents\Rust2\rust-td 2\target\debug\.fingerprint\sqlx-postgres-2fe09b560f1081bc\lib-sqlx_postgres`
+
+Caused by:
+    The system cannot find the file specified. (os error 2)
+
+Stack backtrace:
+   0: git_midx_writer_dump
+   1: git_midx_writer_dump
+   2: git_midx_writer_dump
+   3: git_midx_writer_dump
+   4: git_filter_source_repo
+   5: git_filter_source_path
+   6: git_filter_source_path
+   7: git_filter_source_path
+   8: git_filter_source_path
+   9: git_filter_source_path
+  10: git_filter_source_path
+  11: git_filter_source_repo
+  12: git_filter_source_repo
+  13: git_filter_source_repo
+  14: git_filter_source_repo
+  15: git_filter_source_repo
+  16: <unknown>
+  17: <unknown>
+  18: git_midx_writer_dump
+  19: git_filter_source_repo
+  20: git_midx_writer_dump
+  21: BaseThreadInitThunk
+  22: RtlUserThreadStart
+   1.279211000s  INFO prepare_target{force=false package_id=ws-echo-server v0.1.0 (H:\Documents\Rust2\rust-td 2) target="ws-echo-server"}: cargo::core::compiler::fingerprint: fingerprint error for ws-echo-server v0.1.0 (H:\Documents\Rust2\rust-td 2)/Check { test: true }/TargetInner { name: "ws-echo-server", doc: true, ..: with_path("H:\\Documents\\Rust2\\rust-td 2\\src\\main.rs", Edition2021) }
+   1.279260000s  INFO prepare_target{force=false package_id=ws-echo-server v0.1.0 (H:\Documents\Rust2\rust-td 2) target="ws-echo-server"}: cargo::core::compiler::fingerprint:     err: failed to read `H:\Documents\Rust2\rust-td 2\target\debug\.fingerprint\ws-echo-server-5e4caa556d20d8bb\test-bin-ws-echo-server`
 
 Caused by:
     The system cannot find the file specified. (os error 2)
@@ -57,7 +116,7 @@ Stack backtrace:
   18: git_midx_writer_dump
   19: BaseThreadInitThunk
   20: RtlUserThreadStart
+    Checking sqlx-postgres v0.8.6
+    Checking sqlx v0.8.6
     Checking ws-echo-server v0.1.0 (H:\Documents\Rust2\rust-td 2)
-error: could not compile `ws-echo-server` (bin "ws-echo-server") due to 1 previous error
-warning: build failed, waiting for other jobs to finish...
-error: could not compile `ws-echo-server` (bin "ws-echo-server" test) due to 1 previous error
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 16.16s
