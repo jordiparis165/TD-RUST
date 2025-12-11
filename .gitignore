@@ -1,0 +1,12 @@
+# Rust build outputs
+**/target/
+
+# Local environments
+**/.env
+**/.env.*
+
+# Compiled binaries and debug artifacts
+**/*.exe
+**/*.dll
+**/*.pdb
+**/*.d
