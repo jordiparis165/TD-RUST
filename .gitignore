@@ -10,3 +10,7 @@
 **/*.dll
 **/*.pdb
 **/*.d
+
+# Local temp files
+**/*.tmp
+trash/
